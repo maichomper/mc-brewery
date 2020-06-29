@@ -1,4 +1,4 @@
-package guru.springframework.mcbrewery.web.controller;
+package guru.springframework.mcbrewery.web;
 
 import guru.springframework.mcbrewery.services.BeerService;
 import guru.springframework.mcbrewery.web.model.BeerDto;
@@ -7,6 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/api/v1/beer")
@@ -27,7 +31,7 @@ public class BeerController {
     }
 
     @PostMapping
-    public ResponseEntity create(@RequestBody BeerDto beerDto){
+    public ResponseEntity create(@Valid @RequestBody BeerDto beerDto){
         BeerDto newBeer = beerService.create(beerDto);
 
         HttpHeaders headers = new HttpHeaders();
@@ -37,7 +41,7 @@ public class BeerController {
     }
 
     @PutMapping("/{beerId}")
-    public ResponseEntity update(@PathVariable("beerId") UUID beerId, @RequestBody BeerDto beerDto){
+    public ResponseEntity update(@Valid @PathVariable("beerId") UUID beerId, @RequestBody BeerDto beerDto){
         beerService.update(beerId, beerDto);
 
         HttpHeaders headers = new HttpHeaders();
@@ -50,4 +54,5 @@ public class BeerController {
     public void delete(@PathVariable("beerId") UUID beerId){
         beerService.delete(beerId);
     }
+
 }
